@@ -97,7 +97,7 @@ class MainFrame ( wx.Frame ):
                 self.gongdenum += 1
                 self.info["gongde"] += 1
                 # self.
-                playsound("./muyu.mp3")
+                Thread(target=self.play).start()
                 self.number.SetLabelText(text = f"目前功德:{self.gongdenum}")
                 with open("gongde.json", "w") as f: 
                     f.write(json.dumps(self.info, indent=4))
@@ -109,6 +109,9 @@ class MainFrame ( wx.Frame ):
     def start(self): 
         with Listener(on_press=self.on_press) as l: 
             l.join()
+
+    def play(self): 
+        playsound("./muyu.mp3")
 
     def exit_sys(self, s): 
         import os
