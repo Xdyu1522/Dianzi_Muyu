@@ -93,15 +93,15 @@ class MainFrame ( wx.Frame ):
     def on_press(self, key): 
         try: 
             if key.name == "space": 
-                self.gongde.Show(True)
+                # self.
                 self.gongdenum += 1
                 self.info["gongde"] += 1
                 # self.
-                Thread(target=self.play).start()
+                Thread(name="play_sound_effect", target=self.play, args=(self,)).start()
                 self.number.SetLabelText(text = f"目前功德:{self.gongdenum}")
                 with open("gongde.json", "w") as f: 
                     f.write(json.dumps(self.info, indent=4))
-                self.gongde.Hide()
+                
                 # print("Add.")
         except AttributeError: 
             pass
@@ -110,8 +110,10 @@ class MainFrame ( wx.Frame ):
         with Listener(on_press=self.on_press) as l: 
             l.join()
 
-    def play(self): 
+    def play(self, obj): 
+        obj.gongde.Show(True)
         playsound("./muyu.mp3")
+        obj.gongde.Hide()
 
     def exit_sys(self, s): 
         import os
